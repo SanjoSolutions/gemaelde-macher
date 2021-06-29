@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Gemälde Kette Macher</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+<script src="index.js"></script>
+<script type="module">
+  import { calculateAngle } from './calculateAngle.mjs'
+
+  const path = [
+    {x: 100, y: 100},
+    {x: 150, y: 150},
+    {x: 200, y: 200},
+    {x: 225, y: 300},
+    {x: 250, y: 400},
+    {x: 300, y: 500},
+    {x: 400, y: 520},
+    {x: 500, y: 500},
+    {x: 570, y: 410},
+    {x: 590, y: 300},
+  ]
+
+  const canvas = document.createElement('canvas')
+  canvas.width = window.innerWidth
+  canvas.height = window.innerHeight
+  document.body.appendChild(canvas)
+  const context = canvas.getContext('2d')
+
+  const options = {
+    rectangleWidth: 16,
+    rectangleHeight: 16,
+    width: 32,
+    height: 32
+  }
+
+  for (let index = 0; index < path.length; index++) {
+    const point = path[index]
+    let angle
+    if (index === 0) {
+      angle = calculateAngle2(path[0], path[1])
+    } else if (index === path.length - 1) {
+      angle = calculateAngle2(path[path.length - 2], path[path.length - 1])
+    } else {
+      angle = calculateAngle(path[index - 1], path[index], path[index + 1])
+    }
+    const image = createImage(chooseColor4, options)
+    context.save()
+    context.translate(
+      point.x,
+      point.y
+    )
+    context.rotate(angle)
+    context.drawImage(image, -0.5 * options.width, -0.5 * options.height)
+    context.restore()
+  }
+
+  /*
+  context.beginPath()
+  context.strokeStyle = 'red'
+  context.fillStyle = 'red'
+  drawPoint(path[0])
+  for (let index = 1; index < path.length; index++) {
+    const {x, y} = path[index]
+    context.moveTo(path[index - 1].x, path[index - 1].y)
+    context.lineTo(x, y)
+    context.stroke()
+    drawPoint({x, y})
+  }
+
+  function drawPoint({x, y}) {
+    context.beginPath()
+    context.arc(x, y, 1.5, 0, 2 * Math.PI)
+    context.fill()
+  }
+  */
+
+  function calculateAngle2(a, b) {
+    return (Math.atan2(
+      b.y - a.y,
+      b.x - a.x
+    ) + 0.5 * Math.PI) % (2 * Math.PI)
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Gemälde Macher</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="index.css">
+  <style>
+    body {
+      width: calc(4 * (128px + 0.5rem));
+    }
+  </style>
+</head>
+<body>
+<script src="index.js"></script>
+<script>
+  createMultiple(16, chooseRandomColor, {
+    width: 128,
+    height: 128
+  })
+</script>
+</body>
+</html>
